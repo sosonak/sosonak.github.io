@@ -20,10 +20,10 @@ title                    : "少少樂"
 title_separator          : "-"
 subtitle                 : "소소한 배움, 소소한 앎의 즐거움" # site tagline that appears below site title in masthead
 name                     : "꿈쟁이 개발자"
-description              : "An amazing website."
+description              : "소소한 즐거움"
 url                      : "https://sosonak.github.io"  # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
-repository               : "https://github.com/sosonak/sosonak.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
+repository               : "sosonak/sosonak.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 logo                     : # path of logo image to display in the masthead, e.g. "/assets/images/88x88.png"
 masthead_title           : # overrides the website title displayed in the masthead, use " " for no title
@@ -105,7 +105,7 @@ author:
   name             : "꿈쟁이 개발자"
   avatar           : "/assets/images/bio-photo.png"
   bio              : "꿈을 잃은 사람에게 꿈을 심어주는 개발자"
-  #location         : ""
+  location         : "Republic of Korea"
   email            :
   links:
     - label: "Email"
@@ -288,3 +288,11 @@ defaults:
       comments: # true
       share: true
       related: true
+
+  # _pages                      : 해당 하단 영역이 새로 추가되었습니다.
+  - scope:
+      path: "_pages"
+      type: pages
+    values:
+      layout: single
+      author_profile: true
