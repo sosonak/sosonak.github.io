@@ -2,6 +2,7 @@
 layout:     post
 title:      "Paper Review"
 subtitle:   "AdaSpeech: Adaptive Text To Speech for Custom Voice"
+use_math: true
 tags:
   - TTS, Microsoft, CustomVoice, lightweight
 ---
@@ -18,19 +19,18 @@ AdaSpeech는 이러한 문제를 풀기 위해 아래 두가지를 제안한다.
 + 다양한 acoustic condition을 다루기 위해 utterence와 phoneme level의 acoustic vector를 사용한다. pre-training과 fine-tuning 동안에 target speech로 부터 utterence-level vector를 추출하기 위한 encoder와 phoneme-level vector를 추출하기 위한 encoder를 사용한다. 추론시 utterence-level vector는 reference speech로 부터 추출하고, phoneme-level vector는 acoustic predictor를 통해 추출한다.
 + 음성 품질과 적응 매개변수 간의 균형을 잘 맞추기 위해, AdaSpeech는 mel-스펙트럼 디코더에 조건부 레이어 정규화(CLN)를 도입해서 adaptation 과정에서 speaker embedding외에 이 부분을 fine-tuning 한다.  
 
-LibriTTS data로 source TTS model을 pre-training 하고, VCTK와 LJSpeech data(LibriTTS와는 다른 acoustic condition)의 적은 양의 데이터(예를 들면 20문장, 약 1분 데이터)로 fine-tuning 한다.  
-실험 결과 AdaSpeech는 화자당 5K 정도의 parameter 수로 baseline 보다 좋은 성능을 달성했다.
+LibriTTS data로 source TTS model을 pre-training 하고, VCTK와 LJSpeech data(LibriTTS와는 다른 acoustic condition)의 적은 양의 데이터(예를 들면 20문장, 약 1분 데이터)로 fine-tuning 한다. 실험 결과 AdaSpeech는 화자당 5K 정도의 parameter 수로 baseline 보다 좋은 성능을 달성했다.
 
 ------------
 
 ### **AdaSpeech**
 > backbone은 FastSpeech2를 사용한다.
 AdaSpeech는 Custom Voice에서 해결해야 할 두가지 문제를 위해 아래 그림에서 보이는 핑크색 부분의 두가지 모듈을 도입했다.   
-<img src="/img/in-post/2023/2023-05-18/fig1.png" width="300" height="400">
+<center><img src="/img/in-post/2023/2023-05-18/fig1.png" width="300" height="400"></center>
 
 #### Acoustic Condition Modeling
 > 다양한 고객을 지원하기 위해 source 데이터와 매우 다른 다양한 acoustic condition을 다루기 위해 acoustic condition modeling을 사용한다. source speech data는 custom voice의 모든 acoustic condition을 cover 할 수 없다. 그리고 입력 텍스트는 target speech의 acoustic condition을 표현하기에는 부족하다. 또한 model은 training data에 overfit 되는 경향이 있어, adaptation의 일반화 성능을 떨어뜨린다. 이런한 문제를 해결하기 위해 AdaSpeech는 아래 (a)같은 방식으로 acoustic condition을 모델링한다.
-![](/img/in-post/2023/2023-05-18/fig2.png)
+<img src="/img/in-post/2023/2023-05-18/fig2.png" width=400 height="200">
 + Speaker level : speaker의 전체적인 특징을 capture하기 위한 coarse-grained acoustic condition
 + **_Utterance level_** : 위 그림의 (b), utterance-level acoustic encoder의 output은 condition은 expand 후에 phoneme hidden sequence와 더해진다.   
 + **_Phoneme level_** : 위 그림의 (c), alignment 결과를 바탕으로 phoneme 단위로 mel-spectrgram을 평균을 취해서 speech frame 길이의 input을 phoneme sequence 길이로 변경한다. inference시에는 위 그림의 (d)의 phoneme-level acoustic predictor를 사용한다.
@@ -42,7 +42,7 @@ $$LN(x) = \gamma{x-\mu\over\sigma}+\beta $$
 <center><img src="/img/in-post/2023/2023-05-18/fig3.png" width="250" height="150"></center>
 
 #### Pipeline of AdaSpeech
-> ![](/img/in-post/2023/2023-05-18/adaspeech_alg.png)
+> <img src="/img/in-post/2023/2023-05-18/adaspeech_alg.png" width="500" height="200">  
 $W^{\gamma}_{c}$, $W^{\beta}_{c}$ : conditional layer noramlization의 scale과 bias를 위한 weight vector  
 $E_{s}$ : speaker embedding  
 $\gamma^{s}_{c}$, $\beta^{s}_{c}$ : $E_{s}$ * $W^{\gamma}_{c}$,  $E_{s}$ * $W^{\beta}_{c}$
@@ -61,7 +61,7 @@ $\gamma^{s}_{c}$, $\beta^{s}_{c}$ : $E_{s}$ * $W^{\gamma}_{c}$,  $E_{s}$ * $W^{\
     + kernel size = 9
 
     phoneme-level acoustic encoder(아래 (c))와 predictor(아래 (d))는 동일한 구조를 가졌다. 2개의 convolutional layer의 커널 사이즈는 각각 256과 3이다. 그리고 linear layer의 hidden dimension는 4(사전 실험을 통해 정해짐)이다. alignment를 위해 **MFA**를 사용했다. utterance-level acoustic encoder(아래 (b))는 2개의 convolutional layer를 가지며, filter size=256, kernel size=5, stride size=3이다. 그리고 single vector를 얻기 위해 pooling layer가 있다.  
-![](/img/in-post/2023/2023-05-18/fig2.png)
+<img src="/img/in-post/2023/2023-05-18/fig2.png" width=400 height="200">
 + Training, Adaptation and Inference
     + Training
         + 1차 = phoneme-level acoustic predictor를 제외하고 60,000 step
