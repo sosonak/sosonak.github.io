@@ -26,7 +26,7 @@ LibriTTS data로 source TTS model을 pre-training 하고, VCTK와 LJSpeech data(
 ### **AdaSpeech**
 > backbone은 FastSpeech2를 사용한다.
 AdaSpeech는 Custom Voice에서 해결해야 할 두가지 문제를 위해 아래 그림에서 보이는 핑크색 부분의 두가지 모듈을 도입했다.   
-<center><img src="/img/in-post/2023/2023-05-18/fig1.png" width="300" height="400"></center>
+<center><img src="/img/in-post/2023/2023-05-18/fig1.png" width="100" height="200"></center>
 
 #### Acoustic Condition Modeling
 > 다양한 고객을 지원하기 위해 source 데이터와 매우 다른 다양한 acoustic condition을 다루기 위해 acoustic condition modeling을 사용한다. source speech data는 custom voice의 모든 acoustic condition을 cover 할 수 없다. 그리고 입력 텍스트는 target speech의 acoustic condition을 표현하기에는 부족하다. 또한 model은 training data에 overfit 되는 경향이 있어, adaptation의 일반화 성능을 떨어뜨린다. 이런한 문제를 해결하기 위해 AdaSpeech는 아래 (a)같은 방식으로 acoustic condition을 모델링한다.
@@ -77,9 +77,9 @@ $\gamma^{s}_{c}$, $\beta^{s}_{c}$ : $E_{s}$ * $W^{\gamma}_{c}$,  $E_{s}$ * $W^{\
 
 ### **Result**
 + The quality of Adaptation Voice  
-<img src="/img/in-post/2023/2023-05-18/table1.png" width="500" height="300">    
+<img src="/img/in-post/2023/2023-05-18/table1.png" width="500" height="300">  
 Baseline (spk_emb) : FastSpeech2에서 speaker embedding만 fine-tune - lower bound  
-Baseline (decoder) : FastSpeech2에서 decoder 전체를 fine-tune
+Baseline (decoder) : FastSpeech2에서 decoder 전체를 fine-tune  
 위 표에 3번째 컬럼은 custom voice를 adaptation 하는 동안 추가되는 파라메터 수이며, 괄호안의 숫자는 inference시에 파라메터 수를 나타낸다.  
 결과를 보면 AdaSpeech가 Baseline (decoder) 보다 훨씬 적은 수의 파라메터만 fine-tune 했음에도 불구하고 음질과 화자 유사도에서 비슷한 성능을 나타내는 것을 알 수 있다.  
   
@@ -89,7 +89,7 @@ Baseline (decoder) : FastSpeech2에서 decoder 전체를 fine-tune
     VCTK test set에 대해 단지 speaker embedding 만 업데이트 하고, utterance-level, phoneme-level acoustic modeling, conditional layer normalization을 제거했을 때 성능이 떨어지는 것을 확인했다.  
     + Analyses on Acoustic Condition Modeling  
     LibriTTS dataset의 여러명의 화자에 대해 utterance-level acoustic vector를 추출하여 t-SNE 분석 결과를 plot 해 보았다. 갈색 원 부분처럼의 약간의 예외는 있지만 동일한 화자끼리는 가까운 곳에 위치한다는 것을 알 수 있다.  
-    <center><img src="/img/in-post/2023/2023-05-18/fig4-a.png" width="200" height="200"></center>  
+    <img src="/img/in-post/2023/2023-05-18/fig4-a.png" width="300" height="300">  
     + Analyses on Conditional Layer Normalization  
     conditional layer normalization의 유효성을 검증하기 위해 speaker embedding condition을 제거하고 아래 두가지 경우에 대해서 비교했다. VCTK dataset에 대해서 진행
         + LN + fine-tune scale/bias : speaker embedding 과 layer normalization의 weight와 bias를 fine-tune
@@ -97,7 +97,7 @@ Baseline (decoder) : FastSpeech2에서 decoder 전체를 fine-tune
     <img src="/img/in-post/2023/2023-05-18/table3.png" width="300" height="100">  
     + Varying Adaptation Data
     VCTK와 LJSpeech에 대해 adaptation data량에 따른 성능을 평가했다. 10문장 이하에서 성능이 빠르게 감소했다.  
-    ![](/img/in-post/2023/2023-05-18/fig4-b.png)  
+    <img src="/img/in-post/2023/2023-05-18/fig4-b.png" width="300" height="300">    
 
 
 ### **Conclusions**
