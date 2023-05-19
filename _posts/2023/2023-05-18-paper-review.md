@@ -26,7 +26,7 @@ LibriTTS data로 source TTS model을 pre-training 하고, VCTK와 LJSpeech data(
 ### **AdaSpeech**
 > backbone은 FastSpeech2를 사용한다.
 AdaSpeech는 Custom Voice에서 해결해야 할 두가지 문제를 위해 아래 그림에서 보이는 핑크색 부분의 두가지 모듈을 도입했다.   
-<center><img src="/img/in-post/2023/2023-05-18/fig1.png" width="100" height="200"></center>
+<img src="/img/in-post/2023/2023-05-18/fig1.png" width="200" height="300">
 
 #### Acoustic Condition Modeling
 > 다양한 고객을 지원하기 위해 source 데이터와 매우 다른 다양한 acoustic condition을 다루기 위해 acoustic condition modeling을 사용한다. source speech data는 custom voice의 모든 acoustic condition을 cover 할 수 없다. 그리고 입력 텍스트는 target speech의 acoustic condition을 표현하기에는 부족하다. 또한 model은 training data에 overfit 되는 경향이 있어, adaptation의 일반화 성능을 떨어뜨린다. 이런한 문제를 해결하기 위해 AdaSpeech는 아래 (a)같은 방식으로 acoustic condition을 모델링한다.
@@ -36,7 +36,7 @@ AdaSpeech는 Custom Voice에서 해결해야 할 두가지 문제를 위해 아�
 + **_Phoneme level_** : 위 그림의 (c), alignment 결과를 바탕으로 phoneme 단위로 mel-spectrgram을 평균을 취해서 speech frame 길이의 input을 phoneme sequence 길이로 변경한다. inference시에는 위 그림의 (d)의 phoneme-level acoustic predictor를 사용한다.
 
 #### Conditional Layer Normalization
-적은 파라메터 수만 업데이트 해서 좋은 품질을 얻기 위해 FastSpeech2 모듈을 분석한 결과 layer normalization이 각 self-attention과 decoder에 feed-forward network에 사용되고 있었다. 그리고 layer normalization의 scale vector $\gamma$와 bias vector $\beta$를 학습해서 최종 예측과 hidden acivation에 큰 영향을 줄 수 있었다. 
+> 적은 파라메터 수만 업데이트 해서 좋은 품질을 얻기 위해 FastSpeech2 모듈을 분석한 결과 layer normalization이 각 self-attention과 decoder에 feed-forward network에 사용되고 있었다. 그리고 layer normalization의 scale vector $\gamma$와 bias vector $\beta$를 학습해서 최종 예측과 hidden acivation에 큰 영향을 줄 수 있었다. 
 $$LN(x) = \gamma{x-\mu\over\sigma}+\beta $$
 >실제 condition layer normalization은 아래와 같이 구성된다.  
 <img src="/img/in-post/2023/2023-05-18/fig3.png" width="250" height="150">
