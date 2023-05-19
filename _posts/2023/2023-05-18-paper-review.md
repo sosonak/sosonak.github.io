@@ -77,7 +77,7 @@ $\gamma^{s}_{c}$, $\beta^{s}_{c}$ : $E_{s}$ * $W^{\gamma}_{c}$,  $E_{s}$ * $W^{\
 
 ### **Result**
 + The quality of Adaptation Voice  
-![](/img/in-post/2023/2023-05-18/table1.png)
+<img src="/img/in-post/2023/2023-05-18/table1.png" width="500" height="300">    
 Baseline (spk_emb) : FastSpeech2에서 speaker embedding만 fine-tune - lower bound  
 Baseline (decoder) : FastSpeech2에서 decoder 전체를 fine-tune
 위 표에 3번째 컬럼은 custom voice를 adaptation 하는 동안 추가되는 파라메터 수이며, 괄호안의 숫자는 inference시에 파라메터 수를 나타낸다.  
@@ -87,21 +87,21 @@ Baseline (decoder) : FastSpeech2에서 decoder 전체를 fine-tune
     + Ablation Study  
     <img src="/img/in-post/2023/2023-05-18/table2.png" width="300" height="200">  
     VCTK test set에 대해 단지 speaker embedding 만 업데이트 하고, utterance-level, phoneme-level acoustic modeling, conditional layer normalization을 제거했을 때 성능이 떨어지는 것을 확인했다.  
-    + Analyses on Acoustic Condition Modeling
-    LibriTTS dataset의 여러명의 화자에 대해 utterance-level acoustic vector를 추출하여 t-SNE 분석 결과를 plot 해 보았다. 갈색 원 부분처럼의 약간의 예외는 있지만 동일한 화자끼리는 가까운 곳에 위치한다는 것을 알 수 있다.
-    ![](/img/in-post/2023/2023-05-18/fig4-a.png)
-    + Analyses on Conditional Layer Normalization
+    + Analyses on Acoustic Condition Modeling  
+    LibriTTS dataset의 여러명의 화자에 대해 utterance-level acoustic vector를 추출하여 t-SNE 분석 결과를 plot 해 보았다. 갈색 원 부분처럼의 약간의 예외는 있지만 동일한 화자끼리는 가까운 곳에 위치한다는 것을 알 수 있다.  
+    <center><img src="/img/in-post/2023/2023-05-18/fig4-a.png" width="200" height="200"></center>  
+    + Analyses on Conditional Layer Normalization  
     conditional layer normalization의 유효성을 검증하기 위해 speaker embedding condition을 제거하고 아래 두가지 경우에 대해서 비교했다. VCTK dataset에 대해서 진행
         + LN + fine-tune scale/bias : speaker embedding 과 layer normalization의 weight와 bias를 fine-tune
         + LN + fine-tune others : decoder의 다른 파라메터를 fine-tune  
     <img src="/img/in-post/2023/2023-05-18/table3.png" width="300" height="100">  
     + Varying Adaptation Data
-    VCTK와 LJSpeech에 대해 adaptation data량에 따른 성능을 평가했다. 10문장 이하에서 성능이 빠르게 감소했다.
-    ![](/img/in-post/2023/2023-05-18/fig4-b.png)
+    VCTK와 LJSpeech에 대해 adaptation data량에 따른 성능을 평가했다. 10문장 이하에서 성능이 빠르게 감소했다.  
+    ![](/img/in-post/2023/2023-05-18/fig4-b.png)  
 
 
 ### **Conclusions**
-> AdaSpeech에서 제안한 방법을 통해 source model data와 다른 acoustic condition의 data에 대해서도 적은 메모리 사용량으로 좋은 품질의 합성음을 만들어 낼 수 있었다. future work으로 소음 데이터와 같은 더 다양한 acoustic condition data에 대한 연구를 진행할 것이다. 또한 transcript가 없는 adaptation 데이터에 대한 연구와 더 많은 custom voice를 위한 모델 사이즈를 줄이기 위한 연구를 진행할 것이다.
+> AdaSpeech에서 제안한 방법을 통해 source model data와 다른 acoustic condition의 data에 대해서도 적은 메모리 사용량으로 좋은 품질의 합성음을 만들어 낼 수 있었다. future work으로 소음 데이터와 같은 더 다양한 acoustic condition data에 대한 연구를 진행할 것이다. 또한 transcript가 없는 adaptation 데이터에 대한 연구와 더 많은 custom voice를 위한 모델 사이즈를 줄이기 위한 연구를 진행할 것이다.  
 
 ### **Sample**
 + https://speechresearch.github.io/adaspeech/
