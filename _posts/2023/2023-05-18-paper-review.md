@@ -1,10 +1,15 @@
 ---
 layout:     post
-title:      "Paper Review"
+title:      [논문리뷰] AdaSpeech
 subtitle:   "AdaSpeech: Adaptive Text To Speech for Custom Voice"
 use_math: true
+categories:
+  - Post Formats
 tags:
-  - TTS, Microsoft, CustomVoice, lightweight
+  - TTS
+  - Microsoft
+  - CustomVoice
+  - lightweight
 ---
 
 # [논문리뷰] AdaSpeech: Adaptive Text To Speech for Custom Voice
