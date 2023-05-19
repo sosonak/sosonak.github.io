@@ -36,10 +36,10 @@ AdaSpeech는 Custom Voice에서 해결해야 할 두가지 문제를 위해 아�
 + **_Phoneme level_** : 위 그림의 (c), alignment 결과를 바탕으로 phoneme 단위로 mel-spectrgram을 평균을 취해서 speech frame 길이의 input을 phoneme sequence 길이로 변경한다. inference시에는 위 그림의 (d)의 phoneme-level acoustic predictor를 사용한다.
 
 #### Conditional Layer Normalization
-> 적은 파라메터 수만 업데이트 해서 좋은 품질을 얻기 위해 FastSpeech2 모듈을 분석한 결과 layer normalization이 각 self-attention과 decoder에 feed-forward network에 사용되고 있었다. 그리고 layer normalization의 scale vector $\gamma$와 bias vector $\beta$를 학습해서 최종 예측과 hidden acivation에 큰 영향을 줄 수 있었다. 
+적은 파라메터 수만 업데이트 해서 좋은 품질을 얻기 위해 FastSpeech2 모듈을 분석한 결과 layer normalization이 각 self-attention과 decoder에 feed-forward network에 사용되고 있었다. 그리고 layer normalization의 scale vector $\gamma$와 bias vector $\beta$를 학습해서 최종 예측과 hidden acivation에 큰 영향을 줄 수 있었다. 
 $$LN(x) = \gamma{x-\mu\over\sigma}+\beta $$
 >실제 condition layer normalization은 아래와 같이 구성된다.  
-<center><img src="/img/in-post/2023/2023-05-18/fig3.png" width="250" height="150"></center>
+<img src="/img/in-post/2023/2023-05-18/fig3.png" width="250" height="150">
 
 #### Pipeline of AdaSpeech
 > <img src="/img/in-post/2023/2023-05-18/adaspeech_alg.png" width="500" height="200">  
@@ -95,9 +95,9 @@ Baseline (decoder) : FastSpeech2에서 decoder 전체를 fine-tune
         + LN + fine-tune scale/bias : speaker embedding 과 layer normalization의 weight와 bias를 fine-tune
         + LN + fine-tune others : decoder의 다른 파라메터를 fine-tune  
     <img src="/img/in-post/2023/2023-05-18/table3.png" width="300" height="100">  
-    + Varying Adaptation Data
+    + Varying Adaptation Data  
     VCTK와 LJSpeech에 대해 adaptation data량에 따른 성능을 평가했다. 10문장 이하에서 성능이 빠르게 감소했다.  
-    <img src="/img/in-post/2023/2023-05-18/fig4-b.png" width="300" height="300">    
+    <img src="/img/in-post/2023/2023-05-18/fig4-b.png" width="200" height="200">    
 
 
 ### **Conclusions**
