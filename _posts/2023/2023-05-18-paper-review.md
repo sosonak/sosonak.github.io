@@ -1,7 +1,6 @@
 ---
-title:      [논문리뷰] AdaSpeech
-subtitle:   "AdaSpeech: Adaptive Text To Speech for Custom Voice"
-use_math: true
+title: \[논문리뷰\] AdaSpeech
+subtitle: "AdaSpeech: Adaptive Text To Speech for Custom Voice"
 categories:
   - Paper review
 tags:
@@ -9,6 +8,7 @@ tags:
   - Microsoft
   - CustomVoice
   - lightweight
+use_math: true
 ---
 
 # [논문리뷰] AdaSpeech: Adaptive Text To Speech for Custom Voice
@@ -28,28 +28,28 @@ LibriTTS data로 source TTS model을 pre-training 하고, VCTK와 LJSpeech data(
 ------------
 
 ### **AdaSpeech**
-> backbone은 FastSpeech2를 사용한다.
+backbone은 FastSpeech2를 사용한다.
 AdaSpeech는 Custom Voice에서 해결해야 할 두가지 문제를 위해 아래 그림에서 보이는 핑크색 부분의 두가지 모듈을 도입했다.   
 <img src="/img/in-post/2023/2023-05-18/fig1.png" width="200" height="300">
 
 #### Acoustic Condition Modeling
-> 다양한 고객을 지원하기 위해 source 데이터와 매우 다른 다양한 acoustic condition을 다루기 위해 acoustic condition modeling을 사용한다. source speech data는 custom voice의 모든 acoustic condition을 cover 할 수 없다. 그리고 입력 텍스트는 target speech의 acoustic condition을 표현하기에는 부족하다. 또한 model은 training data에 overfit 되는 경향이 있어, adaptation의 일반화 성능을 떨어뜨린다. 이런한 문제를 해결하기 위해 AdaSpeech는 아래 (a)같은 방식으로 acoustic condition을 모델링한다.
+다양한 고객을 지원하기 위해 source 데이터와 매우 다른 다양한 acoustic condition을 다루기 위해 acoustic condition modeling을 사용한다. source speech data는 custom voice의 모든 acoustic condition을 cover 할 수 없다. 그리고 입력 텍스트는 target speech의 acoustic condition을 표현하기에는 부족하다. 또한 model은 training data에 overfit 되는 경향이 있어, adaptation의 일반화 성능을 떨어뜨린다. 이런한 문제를 해결하기 위해 AdaSpeech는 아래 (a)같은 방식으로 acoustic condition을 모델링한다.  
 <img src="/img/in-post/2023/2023-05-18/fig2.png" width=400 height="200">
 + Speaker level : speaker의 전체적인 특징을 capture하기 위한 coarse-grained acoustic condition
 + **_Utterance level_** : 위 그림의 (b), utterance-level acoustic encoder의 output은 condition은 expand 후에 phoneme hidden sequence와 더해진다.   
 + **_Phoneme level_** : 위 그림의 (c), alignment 결과를 바탕으로 phoneme 단위로 mel-spectrgram을 평균을 취해서 speech frame 길이의 input을 phoneme sequence 길이로 변경한다. inference시에는 위 그림의 (d)의 phoneme-level acoustic predictor를 사용한다.
 
 #### Conditional Layer Normalization
-> 적은 파라메터 수만 업데이트 해서 좋은 품질을 얻기 위해 FastSpeech2 모듈을 분석한 결과 layer normalization이 각 self-attention과 decoder에 feed-forward network에 사용되고 있었다. 그리고 layer normalization의 scale vector $\gamma$와 bias vector $\beta$를 학습해서 최종 예측과 hidden acivation에 큰 영향을 줄 수 있었다. 
-$$LN(x) = \gamma{x-\mu\over\sigma}+\beta $$
->실제 condition layer normalization은 아래와 같이 구성된다.  
+적은 파라메터 수만 업데이트 해서 좋은 품질을 얻기 위해 FastSpeech2 모듈을 분석한 결과 layer normalization이 각 self-attention과 decoder에 feed-forward network에 사용되고 있었다. 그리고 layer normalization의 scale vector $\gamma$와 bias vector $\beta$를 학습해서 최종 예측과 hidden acivation에 큰 영향을 줄 수 있었다.  
+\$\$LN(x)=\gamma{x-\mu\over\sigma}+\beta\$\$  
+실제 condition layer normalization은 아래와 같이 구성된다.  
 <img src="/img/in-post/2023/2023-05-18/fig3.png" width="250" height="150">
 
 #### Pipeline of AdaSpeech
-> <img src="/img/in-post/2023/2023-05-18/adaspeech_alg.png" width="500" height="200">  
-$W^{\gamma}_{c}$, $W^{\beta}_{c}$ : conditional layer noramlization의 scale과 bias를 위한 weight vector  
+<img src="/img/in-post/2023/2023-05-18/adaspeech_alg.png" width="500" height="200">  
+$W^{\gamma}\_{c}$, $W^{\beta}\_{c}$ : conditional layer noramlization의 scale과 bias를 위한 weight vector  
 $E_{s}$ : speaker embedding  
-$\gamma^{s}_{c}$, $\beta^{s}_{c}$ : $E_{s}$ * $W^{\gamma}_{c}$,  $E_{s}$ * $W^{\beta}_{c}$
+$\gamma^{s}\_{c}$, $\beta^{s}\_{c}$ : $E\_{s}$ * $W^{\gamma}\_{c}$,  $E\_{s}$ * $W^{\beta}\_{c}$
 
 
 ### **Experimental Setup**
@@ -70,7 +70,7 @@ $\gamma^{s}_{c}$, $\beta^{s}_{c}$ : $E_{s}$ * $W^{\gamma}_{c}$,  $E_{s}$ * $W^{\
     + Training
         + 1차 = phoneme-level acoustic predictor를 제외하고 60,000 step
         + 2차 = phoneme-level acoustic predictor와 jointly를 40,000 step (phoneme-level acoustic encoder는 freeze 한 상태), phoneme-level acoustic predictor는 phoneme-level acoustic encoder의 output과 predictor의 output사이의 mse loss를 통해서 훈련됨.
-        + 4 NVIDIA P40 GPU를 사용했으며, GPU당 batch size는 12,500 frames. Adam optimizer, β1= 0.9,β2= 0.98, $\epsilon$=10−9
+        + 4 NVIDIA P40 GPU를 사용했으며, GPU당 batch size는 12,500 frames. Adam optimizer, β1= 0.9,β2= 0.98, $\epsilon$=$10^\{-9\}$
     + Adaptation
         + 1 NVIDIA P40 GPU 2000 step
         + speaker embedding과 conditional layer-normalization만 업데이트 함.
@@ -105,7 +105,7 @@ Baseline (decoder) : FastSpeech2에서 decoder 전체를 fine-tune
 
 
 ### **Conclusions**
-> AdaSpeech에서 제안한 방법을 통해 source model data와 다른 acoustic condition의 data에 대해서도 적은 메모리 사용량으로 좋은 품질의 합성음을 만들어 낼 수 있었다. future work으로 소음 데이터와 같은 더 다양한 acoustic condition data에 대한 연구를 진행할 것이다. 또한 transcript가 없는 adaptation 데이터에 대한 연구와 더 많은 custom voice를 위한 모델 사이즈를 줄이기 위한 연구를 진행할 것이다.  
+AdaSpeech에서 제안한 방법을 통해 source model data와 다른 acoustic condition의 data에 대해서도 적은 메모리 사용량으로 좋은 품질의 합성음을 만들어 낼 수 있었다. future work으로 소음 데이터와 같은 더 다양한 acoustic condition data에 대한 연구를 진행할 것이다. 또한 transcript가 없는 adaptation 데이터에 대한 연구와 더 많은 custom voice를 위한 모델 사이즈를 줄이기 위한 연구를 진행할 것이다.  
 
 ### **Sample**
 + https://speechresearch.github.io/adaspeech/
