@@ -3,7 +3,7 @@ title:      [논문리뷰] AdaSpeech
 subtitle:   "AdaSpeech: Adaptive Text To Speech for Custom Voice"
 use_math: true
 categories:
-  - Post Formats
+  - Paper review
 tags:
   - TTS
   - Microsoft

@@ -1,7 +1,7 @@
 ---
 title: pytorch를 tensorflow로 변환시 참고사항
 categories:
-  - Post Formats
+  - Tech
 tags:
   - torch
   - tensorflow
