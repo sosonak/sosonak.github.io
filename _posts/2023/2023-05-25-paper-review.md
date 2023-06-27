@@ -6,8 +6,8 @@ categories:
 tags:
   - TTS
   - Microsoft
-  - CustomVoice
-  - lightweight
+  - adaptation
+  - untranscribed data
 use_math: true
 ---
 
